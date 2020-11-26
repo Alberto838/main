@@ -30,3 +30,11 @@ INSERT INTO marynarz (id_postaci, nazwa, rodzaj, data_ur, wiek, funkcja, statek,
 INSERT INTO marynarz (id_postaci, nazwa, rodzaj, data_ur, wiek, funkcja, statek, pesel) VALUES ('8', 'Geirstein', 'wiking', '1988-12-20', '31', '', 'UC-10', '12312312317');
 ALTER TABLE marynarz ADD PRIMARY KEY(pesel);
 ALTER TABLE marynarz ADD FOREIGN KEY(statek) REFERENCES statek (nazwa_statku);
+UPDATE postac SET statek=NULL;
+DELETE FROM postac WHERE id_postaci='8';
+ALTER TABLE marynarz DROP FOREIGN KEY marynarz_ibfk_1;
+DELETE FROM statek;
+ALTER TABLE postac DROP FOREIGN KEY postac_ibfk_1;
+DROP TABLE statek;
+CREATE TABLE zwierz(id INT auto_increment, nazwa VARCHAR(50), wiek INT, PRIMARY KEY (id));
+INSERT INTO zwierz SELECT id_postaci, nazwa, wiek FROM postac WHERE rodzaj in ('ptak', 'waz');
