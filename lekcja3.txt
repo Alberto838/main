@@ -21,5 +21,20 @@ SELECT * FROM kreatura WHERE nazwa LIKE '%or%' AND waga BETWEEN 30 AND 70;
 
 Zadanie 3
 
-SELECT * FROM zasob WHERE dataPozyskania LIKE '%-07-%' OR dataPozyskania LIKE '%-08-%';
+SELECT * FROM zasob WHERE MONTH(dataPozyskania) BETWEEN 07 AND 08;
 SELECT * FROM zasob WHERE rodzaj!='' ORDER BY waga ASC;
+SELECT * FROM kreatura WHERE nazwa!='' ORDER BY dataUr DESC limit 5;
+
+
+Zadanie 4
+
+SELECT DISTINCT rodzaj FROM zasob;
+SELECT CONCAT(nazwa, ' - ',  rodzaj) AS kreatury FROM kreatura WHERE rodzaj LIKE 'wi%';
+SELECT nazwa, ilosc*waga as waga_calkowita FROM zasob WHERE year(dataPozyskania) between 2000 and 2007;
+
+
+Zadanie 5
+
+SELECT nazwa, 0.7*waga*ilosc AS masa_netto, 0.3*waga*ilosc AS waga_odpadkow FROM zasob;
+SELECT * FROM zasob WHERE rodzaj IS NULL;
+SELECT DISTINCT rodzaj FROM zasob WHERE nazwa LIKE 'Ba%' OR '%os' ORDER BY rodzaj ASC;
