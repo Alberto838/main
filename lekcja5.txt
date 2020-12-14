@@ -1,0 +1,40 @@
+Zadanie 1
+
+CREATE TABLE kreatura2 LIKE wikingowie.kreatura;
+INSERT INTO kreatura2 SELECT * FROM wikingowie.kreatura;
+
+CREATE TABLE etapy_wyprawy LIKE wikingowie.etapy_wyprawy;
+INSERT INTO etapy_wyprawy SELECT * FROM wikingowie.etapy_wyprawy;
+
+CREATE TABLE uczestnicy LIKE wikingowie.uczestnicy;
+INSERT INTO uczestnicy SELECT * FROM wikingowie.uczestnicy;
+
+CREATE TABLE wyprawa LIKE wikingowie.wyprawa;
+INSERT INTO wyprawa SELECT * FROM wikingowie.wyprawa;
+
+CREATE TABLE sektor LIKE wikingowie.sektor;
+INSERT INTO sektor SELECT * FROM wikingowie.sektor;
+
+SELECT kreatura.nazwa, uczestnicy.id_uczestnika FROM kreatura LEFT JOIN uczestnicy ON kreatura.idKreatury=uczestnicy.id_uczestnika WHERE uczestnicy.id_uczestnika IS NULL;
+
+
+Zadanie 2
+
+SELECT wyprawa.nazwa, count(uczestnicy.id_uczestnika), GROUP_CONCAT(kreatura.nazwa separator ' - ') FROM wyprawa, uczestnicy, kreatura WHERE wyprawa.id_wyprawy=uczestnicy.id_wyprawy AND uczestnicy.id_uczestnika=kreatura.idKreatury GROUP BY wyprawa.nazwa;
+SELECT etapy_wyprawy.idEtapu, sektor.nazwa, kreatura.nazwa FROM etapy_wyprawy, wyprawa, sektor, kreatura WHERE etapy_wyprawy.idWyprawy=wyprawa.id_wyprawy AND etapy_wyprawy.sektor=sektor.id_sektora AND wyprawa.kierownik=kreatura.idKreatury ORDER BY wyprawa.data_rozpoczecia, etapy_wyprawy.kolejnosc;
+
+
+Zadanie 3
+
+SELECT nazwa, count(idEtapu) AS odwiedziny FROM sektor LEFT JOIN etapy_wyprawy ON etapy_wyprawy.sektor=sektor.id_sektora GROUP BY id_sektora;
+SELECT nazwa, IF(COUNT(id_uczestnika)>0,"bral udzial w wyprawie", "nie bral udzialu w wyprawie") AS uczestnictwo FROM kreatura LEFT JOIN uczestnicy ON idKreatury=id_uczestnika GROUP BY nazwa;
+
+
+Zadanie 4
+
+SELECT wyprawa.nazwa, SUM(LENGTH(etapy_wyprawy.dziennik)) AS suma FROM etapy_wyprawy, wyprawa where etapy_wyprawy.idWyprawy=wyprawa.id_wyprawy GROUP BY nazwa HAVING SUM(LENGTH(etapy_wyprawy.dziennik)) < 400;
+SELECT wyprawa.nazwa, SUM(ekwipunek.ilosc*zasob.waga)/count(uczestnicy.id_uczestnika) AS srednia_waga FROM wyprawa, zasob, uczestnicy INNER JOIN ekwipunek ON uczestnicy.id_uczestnika=ekwipunek.idKreatury WHERE uczestnicy.id_wyprawy=wyprawa.id_wyprawy AND zasob.idZasobu=ekwipunek.idZasobu GROUP BY wyprawa.nazwa;
+
+
+Zadanie 5
+SELECT kreatura.nazwa, DATEDIFF(wyprawa.data_rozpoczecia, kreatura.dataUr) AS wiek_w_dniach FROM uczestnicy INNER JOIN kreatura INNER JOIN wyprawa INNER JOIN etapy_wyprawy ON wyprawa.id_wyprawy=uczestnicy.id_wyprawy AND uczestnicy.id_uczestnika=kreatura.idKreatury AND wyprawa.id_wyprawy=etapy_wyprawy.idWyprawy WHERE etapy_wyprawy.sektor=7;

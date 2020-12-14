@@ -16,3 +16,16 @@ Zadanie 3
 
 SELECT kreatura.nazwa, ekwipunek.idZasobu, ekwipunek.ilosc FROM kreatura, ekwipunek WHERE kreatura.idKreatury=ekwipunek.idKreatury;
 SELECT kreatura.nazwa, zasob.nazwa FROM zasob, kreatura, ekwipunek WHERE zasob.idZasobu=ekwipunek.idZasobu and kreatura.idKreatury=ekwipunek.idKreatury;
+SELECT kreatura.idKreatury, kreatura.nazwa from kreatura LEFT JOIN ekwipunek on kreatura.idKreatury=ekwipunek.idKreatury WHERE ekwipunek.idEkwipunku IS NULL;
+
+
+Zadanie 4
+
+SELECT kreatura.nazwa, zasob.nazwa from kreatura, ekwipunek, zasob WHERE kreatura.idKreatury=ekwipunek.idKreatury AND zasob.idZasobu=ekwipunek.idZasobu AND year(dataUr) BETWEEN 1670 AND 1679 AND kreatura.rodzaj='wiking';
+SELECT kreatura.nazwa, kreatura.dataUr from kreatura, ekwipunek, zasob WHERE kreatura.idKreatury=ekwipunek.idKreatury AND zasob.idZasobu=ekwipunek.idZasobu AND zasob.rodzaj='jedzenie' ORDER BY kreatura.dataUr DESC LIMIT 5;
+SELECT CONCAT(kreatura1.nazwa,' - ',kreatura2.nazwa) AS nazwy from kreatura kreatura1, kreatura kreatura2 WHERE kreatura1.idKreatury=kreatura2.idKreatury+5;
+
+
+Zadanie 5
+
+SELECT kreatura.rodzaj, AVG(ekwipunek.ilosc*zasob.waga) AS srednia_waga FROM kreatura INNER JOIN ekwipunek INNER JOIN zasob ON kreatura.idKreatury=ekwipunek.idKreatury AND ekwipunek.idZasobu=zasob.idZasobu WHERE kreatura.rodzaj not in ('malpa', 'waz') GROUP BY kreatura.rodzaj HAVING SUM(ekwipunek.ilosc) < 30;
