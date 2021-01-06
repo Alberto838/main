@@ -1,0 +1,10 @@
+SELECT SUM(oplata_calkowita) AS dochod FROM platnosci;
+SELECT imie, nazwisko, zarobki FROM nauczyciele WHERE zarobki = (SELECT MAX(zarobki) FROM nauczyciele);
+SELECT COUNT(id_ucznia) AS 'Liczba uczniow' FROM uczniowie;
+SELECT CONCAT (imie, ' ', nazwisko) AS uczen, oplata_calkowita AS oplata FROM uczniowie, platnosci WHERE oplata_calkowita BETWEEN 840 AND 950 AND uczniowie.id_ucznia=platnosci.uczen;
+SELECT AVG(oplata_calkowita) AS srednia_oplata FROM platnosci;
+SELECT * FROM uczniowie ORDER BY nazwisko ASC;
+SELECT * FROM nauczyciele WHERE nazwisko LIKE '%ak' OR nazwisko LIKE '%yk';
+SELECT * FROM uczniowie INNER JOIN jezyk ON uczniowie.jezyk=jezyk.id_jezyka GROUP BY id_ucznia HAVING (id_ucznia>9) ORDER BY id_ucznia ASC;
+SELECT CONCAT (imie, ' ',  nazwisko) AS uczen, nazwa, poziom FROM uczniowie, jezyk WHERE uczniowie.jezyk=jezyk.id_jezyka;
+SELECT imie, nazwisko, jezyk FROM uczniowie WHERE id_ucznia IN (SELECT id_jezyka FROM jezyk);
